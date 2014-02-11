@@ -11,6 +11,7 @@ int makeBanner(char borderChar, char *myString[], int numberOfargc)
 {
 	
 	int numberOfchar=3;
+	
 	for(int j=1; j<numberOfargc; j++)
 	{
 
@@ -18,7 +19,7 @@ int makeBanner(char borderChar, char *myString[], int numberOfargc)
 
 	}
 	
-
+	//top of banner
 	for(int k=0; k<numberOfchar; k++)
 	{
 
@@ -30,6 +31,7 @@ int makeBanner(char borderChar, char *myString[], int numberOfargc)
 
 	printf("%c",borderChar );
 	printf("%c", ' ' );
+	//phase itself
 	for(int i=1; i<numberOfargc; i++)
 	{
 
@@ -39,7 +41,7 @@ int makeBanner(char borderChar, char *myString[], int numberOfargc)
 	printf("%c",borderChar );
 	printf("%c", ' ' );
 	printf("%s","\n" );
-
+	//bottom of banner
 	for(int k=0; k<numberOfchar; k++)
 	{
 
@@ -49,28 +51,54 @@ int makeBanner(char borderChar, char *myString[], int numberOfargc)
 	}
 	printf("%s","\n" );
 
-
+	//banner succesfully made
 	return EXIT_SUCCESS;
 
 }
 
-
+//@param argc the number of arguements passed
+//@param argv, the array containing the arguments passed
 int main(int argc, char *argv[])
  {
  	
- 	
+ 	//Check if atleast two arguments are passed
+ 	//If so prompt the user to give a character to make the banner
  	if(argc<2)
  	{
  	printf("%s", "usage: bannerize text to bannerize...\n");
  	}
  	else
  	{
+ 		char myBorderChar;
+
+
  		printf("%s","Enter the character for the border: ");
- 		char myBorderChar=getchar();
+ 		while((myBorderChar=getchar())==' ')
+ 		{	
+ 			
+
+
+ 			if(myBorderChar!=' ')
+ 			{
+
+ 
+ 				break;
+ 			}
+
+
+ 		}
+ 		if(myBorderChar==EOF)
+ 			{
+ 				//banner cannot be made, program has been quit with CTRL D
+ 				printf("%s", "");
+ 				exit(EXIT_FAILURE);
+
+ 			}
+ 		
  		makeBanner(myBorderChar,argv,argc);
 
  	}
- 	
+ 	//Banner was not made successfully
  	return EXIT_FAILURE;
 
  }
