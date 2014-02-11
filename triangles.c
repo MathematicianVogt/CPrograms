@@ -15,6 +15,7 @@
 // TODO_ADD_#INCLUDES_ HERE
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /**
  *  Function: drawTriangle
@@ -79,9 +80,11 @@
  int main(int argc, char *argv[])
  {
  	drawTriangle(2);
+ 	printf("%s\n", "");
  	drawTriangle(4);
+ 	printf("%s\n", "");
  	drawTriangle(6);
-
+ 	return EXIT_SUCCESS;
 
  }
 
