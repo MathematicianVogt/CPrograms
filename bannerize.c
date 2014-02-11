@@ -58,8 +58,7 @@ int makeBanner(char borderChar, char *myString[], int numberOfargc)
 int main(int argc, char *argv[])
  {
  	
- 	printf("%s",argv[0]);
- 	printf("%d",argc);
+ 	
  	if(argc<2)
  	{
  	printf("%s", "usage: bannerize text to bannerize...\n");
