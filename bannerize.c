@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 int makeBanner(char borderChar, char *myString[], int numberOfargc)
 {
@@ -65,27 +66,20 @@ int main(int argc, char *argv[])
  	//If so prompt the user to give a character to make the banner
  	if(argc<2)
  	{
- 	printf("%s", "usage: bannerize text to bannerize...\n");
+ 	printf("%s", "\n");
  	}
  	else
  	{
- 		char myBorderChar;
-
-
  		printf("%s","Enter the character for the border: ");
- 		while((myBorderChar=getchar())==' ')
- 		{	
- 			
-
-
- 			if(myBorderChar!=' ')
+ 		char myBorderChar = getchar();
+ 		while(isspace(myBorderChar))
+ 		{
+ 			if(myBorderChar=='\n')
  			{
+ 				exit(EXIT_FAILURE);
 
- 
- 				break;
  			}
-
-
+ 			myBorderChar = getchar();
  		}
  		if(myBorderChar==EOF)
  			{
