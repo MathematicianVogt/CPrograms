@@ -31,9 +31,28 @@ void displayConvexPoints(struct Point points[], int numPoints){
 //@param convexHull, this will be manipualted from empty to containing the complex hull
 int jarvis(struct Point points[], struct Point convexHull[],int numPoints)
 {
-	struct Point leftMostPoint=leftmostPoint(points,numPoints);
+	struct Point pointOnHull=leftmostPoint(points,numPoints);
 	int i=0;
-	struct Point endPoint=NULL;
+	struct Point endPoint;
+
+	convexHullSet[i]=pointOnHull;
+	endPoint=points[0];
+	for(int i=1 i<numPoints; i++)
+	{
+
+		if(equal(endPoint,points[i]) || ccw(convexHullSet[i], endPoint,points[i]))
+		{
+
+			endPoint=points[i];
+
+		}
+		i++
+		pointOnHull=endPoint;
+
+	}
+
+
+
 	return 0;
 
 
