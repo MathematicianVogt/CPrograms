@@ -8,15 +8,51 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+//A function that takes two points and returns a struct point that represents the vecotor coming out of orgin
+//Helper for the ccw function
+//@param a the struct point
+//@param b the struct point
+//@return vectorPoint a vector representation of the two points centered at the origin
+static struct Point makeVector(struct Point a, struct Point b)
+{
+	int newXcor;
+	int newYcor;
+	struct Point vectorPoint;
+
+	if(a.y>b.y)
+	{
+	struct Point pivotPoint=a;
+	newXcor=pivotPoint.x-b.x;
+	newYcor=pivotPoint.y-b.y;
 
 
+
+	}
+	else
+	{
+		struct Point pivotPoint=b;
+
+		newXcor=pivotPoint.x-a.x;
+		newYcor=pivotPoint.y-a.y;
+
+	}
+	vectorPoint.label='v';
+	vectorPoint.x=newXcor;
+	vectorPoint.y=newYcor;
+
+	return vectorPoint;
+
+
+
+
+}
 
 int ccw(struct Point p, struct Point q, struct Point r)
 {
-
-//#####################
-
-return 0;
+	int crossProductCoeff;
+	struct Point pq=makeVector(p,q);
+	crossProductCoeff=pq.x*r.y-pq.y*r.x;
+	return crossProductCoeff;	
 
 
 }
@@ -127,13 +163,6 @@ struct Point rightmostPoint(struct Point points[], int numPoints)
 
 }
 
-// Determine the point furthest "left" of the line a->z
-// Assumes numPoints is valid.
-// @param a Starting point of a line
-// @param z Ending point of a line
-// @param points A native array of Point's (immutable)
-// @param numPoints The number of valid Point's in points
-// @return The resulting Point
 struct Point furthestLeftPoint(struct Point a, struct Point z, struct Point points[], int numPoints)
 {
 
@@ -218,13 +247,6 @@ int leftPointSet(struct Point a, struct Point z, struct Point points[], int numP
 
 }
 
-// Determine the index of the point with the smallest y-coordinate.
-// If the lowest y coordinate exists in more than one point in the
-// set, the lowest x coordinate out of the candidates should be selected.
-// Assumes numPoints is valid.
-// @param points A native array of Point's (immutable)
-// @param numPoints The number of valid Point's in points
-// @return the lowest Point
 struct Point lowestPoint(struct Point points[], int numPoints)
 {	
 
@@ -444,6 +466,10 @@ int main( void ) {
 	test1.label='b';
 	test1.x=10;
 	test1.y=3;
+	struct Point test2;
+	test2.label='c';
+	test2.x=4;
+	test2.y=6;
 	struct Point lps[5];
 	int mypoints=readPoints(myPoints);
 	displayPoints(myPoints,mypoints);
@@ -453,6 +479,12 @@ int main( void ) {
 	displayPoint(furthestLeftPoint(test,test1,myPoints,mypoints));
 	int here=leftPointSet(test,test1,myPoints,mypoints,lps);
 	displayPoints(lps,here);
-	
+	printf("=====");
+	displayPoint(lowestPoint(myPoints,mypoints));
+	printf("============\n");
+	displayPoint(makeVector(test1,test2));
+	printf("%d\n",ccw(test1,test2,test));
 		return( 0 );
 }
+
+
