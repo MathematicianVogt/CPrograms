@@ -68,6 +68,7 @@ printf("%c: (%d,%d)",p.label,p.x,p.y);
 
 void displayPoints(struct Point points[], int numPoints){
 
+	printf("Set of Points:\n");
 	for(int i=0; i<numPoints; i++)
 	{
 		struct Point currentPointToShow=points[i];
@@ -331,14 +332,12 @@ int readPoints(struct Point points[])
 	int counter=0;
 	int inputCounter=1;
 	char buff[MAX_LINE];
+	int numberOfPoints;
 	printf("Number of points(3-100):");
-	fgets(buff, MAX_LINE, stdin);
-	int numberOfPoints= atoi(buff);
-	printf("%d",numberOfPoints);
-	printf("%d",numberOfPoints<MIN_POINTS );
-	printf("%d",numberOfPoints);
+	if(fgets(buff, MAX_LINE, stdin))
+	{
 
-	
+		numberOfPoints= atoi(buff);
 
 	if(numberOfPoints<MIN_POINTS || numberOfPoints>MAX_POINTS)
 	{
@@ -422,7 +421,28 @@ int readPoints(struct Point points[])
 
 	}
 
-	printf("\n");
+
+	
+
+
+
+
+
+
+
+
+	}
+	else
+		{
+				printf("\nError reading number of points.\n");
+				return 0;
+
+		}
+	
+
+
+	
+
 	return numberOfPoints;
 
 
