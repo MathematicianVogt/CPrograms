@@ -109,7 +109,11 @@ void quickHullRec(struct Point points[], struct Point l, struct Point r, int num
     struct Point f =furthestLeftPoint(l,r,points,numPoints);
     struct Point L[numPoints];
     int Lsize=leftPointSet(l, r, points,numPoints,L);
-    struct Point L(num)
+    struct Point R[numPoints];
+    int Rsize=leftPointSet(f,r points,numPoints,R);
+    quickHullRec(L,l,f);
+    quickHullRec(R,f,r);
+    overridePThree(L,Lsize,f,R,Rsize);
 
 
   }
