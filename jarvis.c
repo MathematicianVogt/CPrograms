@@ -21,7 +21,7 @@ void displayConvexPoints(struct Point points[], int numPoints){
 
 	}
 
-
+printf("dsffdsfsdfHERE");
 
 }
 //A method that does the jarvis algorithm. Takes a set of points  and number of points

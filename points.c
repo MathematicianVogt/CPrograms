@@ -67,13 +67,12 @@ printf("%c: (%d,%d)",p.label,p.x,p.y);
 
 
 void displayPoints(struct Point points[], int numPoints){
-
+	printf("\n%d\n",numPoints );
 	printf("Set of Points:\n");
 	for(int i=0; i<numPoints; i++)
 	{
-		struct Point currentPointToShow=points[i];
-		printf("%c: (%d,%d)\n",currentPointToShow.label,currentPointToShow.x,currentPointToShow.y);
-
+		
+		printf("%c: (%d,%d)\n",points[i].label,points[i].x,points[i].y);
 
 	}
 printf("HIT");
