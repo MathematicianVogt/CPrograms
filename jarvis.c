@@ -40,23 +40,28 @@ int jarvis(struct Point points[], struct Point convexHull[],int numPoints)
 	convexHull[i]=pointOnHull;
 	while(!equal(endPoint,convexHull[0]))
 	{
-	printf("HERTE");
+	
+
+	
 	convexHull[i]=pointOnHull;
 	displayPoint(convexHull[i]);
+	
 	endPoint=points[0];
 	for(int j=1; j<numPoints; j++)
 	{
 
 		if(equal(endPoint,pointOnHull) || (ccw(convexHull[i], endPoint,points[j])>0))
 		{
-			displayPoint(points[i]);
+			//displayPoint(points[i]);
 			endPoint=points[j];
 
 		}
-		i++;
-		pointOnHull=endPoint;
+		
 
 	}
+	i++;
+	pointOnHull=endPoint;
+	
 	}
 	
 
