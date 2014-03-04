@@ -34,23 +34,31 @@ int jarvis(struct Point points[], struct Point convexHull[],int numPoints)
 	struct Point pointOnHull=leftmostPoint(points,numPoints);
 	int i=0;
 	struct Point endPoint;
+	endPoint.x=points[0].x;
+	endPoint.y=points[0].y;
+	convexHull[i]=pointOnHull;
 
-	convexHullSet[i]=pointOnHull;
+	while(!equal(endPoint,convexHull[0]))
+	{
+	printf("HERTE");
+	convexHull[i]=pointOnHull;
+	displayPoint(convexHull[i]);
 	endPoint=points[0];
-	for(int i=1 i<numPoints; i++)
+	for(int j=1; j<numPoints; j++)
 	{
 
-		if(equal(endPoint,points[i]) || ccw(convexHullSet[i], endPoint,points[i]))
+		if(equal(endPoint,pointOnHull) || (ccw(convexHull[i], endPoint,points[j])>0))
 		{
-
-			endPoint=points[i];
+			displayPoint(points[i]);
+			endPoint=points[j];
 
 		}
-		i++
+		i++;
 		pointOnHull=endPoint;
 
 	}
-
+	}
+	
 
 
 	return 0;
@@ -72,7 +80,7 @@ int numberOfjarvicPoints=readPoints(jarvisPoints);
 displayPoints(jarvisPoints,numberOfjarvicPoints);
 struct Point convexHullSet[numberOfjarvicPoints];
 int numberOfConvexPoints=jarvis(jarvisPoints,convexHullSet,numberOfjarvicPoints);
-displayConvexPoints(convexHullSet,numberOfConvexPoints);
+//displayConvexPoints(convexHullSet,numberOfConvexPoints);
 
 
 

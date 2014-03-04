@@ -472,10 +472,7 @@ void swap(int a, int b, struct Point points[], int numPoints)
 }
 
 
-
-
-
-int main( void ) {
+/*int main( void ) {
 
 	struct Point myPoints[5];
 	struct Point test;
@@ -488,8 +485,8 @@ int main( void ) {
 	test1.y=3;
 	struct Point test2;
 	test2.label='c';
-	test2.x=4;
-	test2.y=6;
+	test2.x=0;
+	test2.y=0;
 	struct Point lps[5];
 	int mypoints=readPoints(myPoints);
 	displayPoints(myPoints,mypoints);
@@ -503,8 +500,8 @@ int main( void ) {
 	displayPoint(lowestPoint(myPoints,mypoints));
 	printf("============\n");
 	displayPoint(makeVector(test1,test2));
-	printf("%d\n",ccw(test1,test2,test));
+	printf("%d\n",ccw(test,test2,test1));
 		return( 0 );
 }
-
+*/
 
