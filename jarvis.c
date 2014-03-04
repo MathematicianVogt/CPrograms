@@ -31,13 +31,13 @@ void displayConvexPoints(struct Point points[], int numPoints){
 //@param convexHull, this will be manipualted from empty to containing the complex hull
 int jarvis(struct Point points[], struct Point convexHull[],int numPoints)
 {
+	
 	struct Point pointOnHull=leftmostPoint(points,numPoints);
 	int i=0;
 	struct Point endPoint;
 	endPoint.x=points[0].x;
 	endPoint.y=points[0].y;
 	convexHull[i]=pointOnHull;
-
 	while(!equal(endPoint,convexHull[0]))
 	{
 	printf("HERTE");
@@ -76,10 +76,14 @@ int jarvis(struct Point points[], struct Point convexHull[],int numPoints)
 int main(void)
 {
 struct Point jarvisPoints[MAX_POINTS];
-int numberOfjarvicPoints=readPoints(jarvisPoints);
-displayPoints(jarvisPoints,numberOfjarvicPoints);
-struct Point convexHullSet[numberOfjarvicPoints];
-int numberOfConvexPoints=jarvis(jarvisPoints,convexHullSet,numberOfjarvicPoints);
+printf("HERTfsfE1");
+int numberOfjarvisPoints=readPoints(jarvisPoints);
+printf("HERTfsfE2");
+displayPoints(jarvisPoints,numberOfjarvisPoints);
+printf("HERTfsfE3");
+struct Point convexHullSet[numberOfjarvisPoints];
+printf("HERTfsfE4");
+int numberOfConvexPoints=jarvis(jarvisPoints,convexHullSet,numberOfjarvisPoints);
 //displayConvexPoints(convexHullSet,numberOfConvexPoints);
 
 

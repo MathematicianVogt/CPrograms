@@ -76,7 +76,7 @@ void displayPoints(struct Point points[], int numPoints){
 
 
 	}
-
+printf("HIT");
 
 
 }
@@ -348,7 +348,6 @@ int readPoints(struct Point points[])
 	
 	while(counter<numberOfPoints)
 	{
-
 		if(inputCounter==1)
 		{
 
@@ -442,7 +441,7 @@ int readPoints(struct Point points[])
 
 
 	
-
+	//printf("%d number of points\n",numberOfPoints );
 	return numberOfPoints;
 
 
