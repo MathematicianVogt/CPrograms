@@ -18,24 +18,24 @@ int ccw(struct Point p, struct Point q, struct Point r)
 
 }
 
-void displayPoint(struct Point p){
-
-
-
-printf("%c: (%d,%d)",p.label,p.x,p.y);
-
-}
-
-
-void displayPoints(struct Point points[], int numPoints){
-
-printf("Set of Points:\n");
-for(int i=0; i<numPoints; i++)
+void displayPoint(struct Point p)
 {
 
-printf("%c: (%d,%d)\n",points[i].label,points[i].x,points[i].y);
+	printf("%c: (%d,%d)",p.label,p.x,p.y);
 
 }
+
+
+void displayPoints(struct Point points[], int numPoints)
+{
+
+	printf("Set of Points:\n");
+	for(int i=0; i<numPoints; i++)
+	{
+
+		printf("%c: (%d,%d)\n",points[i].label,points[i].x,points[i].y);
+
+	}
 
 
 }
@@ -44,109 +44,101 @@ printf("%c: (%d,%d)\n",points[i].label,points[i].x,points[i].y);
 int equal(struct Point p1, struct Point p2)
 {
 
-if(p1.x==p2.x && p1.y==p2.y)
-{
+	if(p1.x==p2.x && p1.y==p2.y)
+	{
 
-return 1;
+		return 1;
+
+	}
+
+	return 0;
 
 }
 
-return 0;
-
-}
 int indexOf(struct Point p, struct Point points[], int numPoints)
 {
-int indexOfMatch=0;
-for(int i=0;i<numPoints; i++)
-{
-struct Point currentStruct=points[i];
+	int indexOfMatch=0;
+	for(int i=0;i<numPoints; i++)
+	{
+		struct Point currentStruct=points[i];
 
-if(currentStruct.x==p.x && currentStruct.y==p.y)
-{
+		if(currentStruct.x==p.x && currentStruct.y==p.y)
+		{
 
-return indexOfMatch;
+				return indexOfMatch;
 
-}
+		}
 
-indexOfMatch++;
+	indexOfMatch++;
 
-}
-return -1;
+	}
+		return -1;
 }
 
 
 struct Point leftmostPoint(struct Point points[], int numPoints)
 {
 
-struct Point currentSmallestStruct=points[0];
-for(int i=1; i<numPoints; i++)
-{
+	struct Point currentSmallestStruct=points[0];
+	for(int i=1; i<numPoints; i++)
+	{
 
+		struct Point current=points[i];
+		if(current.x<currentSmallestStruct.x)
+		{
 
-struct Point current=points[i];
-if(current.x<currentSmallestStruct.x)
-{
+			currentSmallestStruct=current;
 
-currentSmallestStruct=current;
+		}
+	}
 
-
-
-}
-}
-
-
-return currentSmallestStruct;
+	return currentSmallestStruct;
 }
 
 struct Point rightmostPoint(struct Point points[], int numPoints)
 {
 
 
-struct Point currentLargestStruct=points[0];
-for(int i=1; i<numPoints; i++)
-{
+	struct Point currentLargestStruct=points[0];
+	for(int i=1; i<numPoints; i++)
+	{
+
+		struct Point current=points[i];
+		if(current.x>currentLargestStruct.x)
+		{
+
+			currentLargestStruct=current;
 
 
-struct Point current=points[i];
-if(current.x>currentLargestStruct.x)
-{
 
-currentLargestStruct=current;
+		}
+	}
 
 
-
-}
-}
-
-
-return currentLargestStruct;
+	return currentLargestStruct;
 
 }
 
 struct Point furthestLeftPoint(struct Point a, struct Point z, struct Point points[], int numPoints)
 {
- float triangleAREA;
- struct Point furthestLeft;
- int counter=0;
+ 	float triangleAREA;
+ 	struct Point furthestLeft;
+ 	int counter=0;
 
 
-for(int i=0; i <numPoints; i++)
-{	
+	for(int i=0; i <numPoints; i++)
+	{	
 
+		if(ccw(a,z,points[i])>0)
+		{
 
-
-if(ccw(a,z,points[i])>0)
-{
-
-	if(counter==0)
-	{	triangleAREA=(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
-		furthestLeft=points[i];
-		counter++;
-		//printf("TRIANGLEAREA:%f\n",triangleAREA );
-
-
-
-	}
+			if(counter==0)
+			{	
+				triangleAREA=(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
+				furthestLeft=points[i];
+				counter++;
+				//printf("TRIANGLEAREA:%f\n",triangleAREA );
+			}
 	else
 	{
 		
@@ -154,9 +146,8 @@ if(ccw(a,z,points[i])>0)
 		if(triangleAREA<(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y)))
 		{
 
-
-		triangleAREA=(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
-		furthestLeft=points[i];
+			triangleAREA=(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
+			furthestLeft=points[i];
 
 		}
 
@@ -165,20 +156,19 @@ if(ccw(a,z,points[i])>0)
 	}
 
 
-
-}
-
+	}
 
 
 
-}
+
+	}
 
 //printf("FURTHESTLEFRT\n");
 //displayPoint(furthestLeft);
 //printf("FURTHESTLEFRT\n");
 
 
-return furthestLeft;
+	return furthestLeft;
 
 
 
@@ -188,20 +178,20 @@ return furthestLeft;
 
 int leftPointSet(struct Point a, struct Point z, struct Point points[], int numPoints, struct Point lps[])
 {
-int numberOfPointsToTheLeft=0;
-int currentLpsele=0;
+	int numberOfPointsToTheLeft=0;
+	int currentLpsele=0;
 
-for(int i=0; i<numPoints; i++)
-{
-
-	if(ccw(a,z,points[i])>0)
+	for(int i=0; i<numPoints; i++)
 	{
 
-		lps[currentLpsele]=points[i];
-		//printf("cross product point\n");
-		//displayPoint(points[i]);
-		currentLpsele++;
-		numberOfPointsToTheLeft++;
+		if(ccw(a,z,points[i])>0)
+		{
+
+			lps[currentLpsele]=points[i];
+			//printf("cross product point\n");
+			//displayPoint(points[i]);
+			currentLpsele++;
+			numberOfPointsToTheLeft++;
 
 
 
@@ -217,66 +207,63 @@ return numberOfPointsToTheLeft;
 struct Point lowestPoint(struct Point points[], int numPoints)
 {	
 
+	struct Point goodY[numPoints];
+	int goodYEle=0;
+	struct Point smallestY=points[0];
+	for(int i=0; i<numPoints; i++)
+	{
+		struct Point currentStruc= points[i];
 
-struct Point goodY[numPoints];
-int goodYEle=0;
-struct Point smallestY=points[0];
-for(int i=0; i<numPoints; i++)
-{
-struct Point currentStruc= points[i];
+		if(currentStruc.y<smallestY.y)
+		{
+			goodYEle=0;
+			memset(goodY, 0, sizeof(goodY));
+			smallestY=currentStruc;
 
-if(currentStruc.y<smallestY.y)
-{
-goodYEle=0;
-memset(goodY, 0, sizeof(goodY));
-smallestY=currentStruc;
+		}
 
-}
+		if(currentStruc.y==smallestY.y)
+		{
 
-if(currentStruc.y==smallestY.y)
-{
-
-goodY[goodYEle]=currentStruc;
-goodY[goodYEle+1]=smallestY;
-goodYEle=goodYEle+2;
-
-
-
-}
+			goodY[goodYEle]=currentStruc;
+			goodY[goodYEle+1]=smallestY;
+			goodYEle=goodYEle+2;
 
 
 
-}
-
-if(goodY==NULL)
-{
-
-
-return smallestY;
-
-}
-else
-{
-struct Point smallestx=goodY[0];
-for(int i =1; i<goodYEle; i++)
-{
-struct Point currentStruc=points[i];
-if(currentStruc.x<smallestx.x)
-{
-
-
-smallestx=currentStruc;
-
-
-}
+		}
 
 
 
-}
-return smallestx;
+		}
+
+		if(goodY==NULL)
+		{
 
 
-}
+		return smallestY;
+
+		}
+		else
+		{
+			struct Point smallestx=goodY[0];
+			for(int i =1; i<goodYEle; i++)
+			{
+				struct Point currentStruc=points[i];
+				if(currentStruc.x<smallestx.x)
+				{
+					smallestx=currentStruc;
+
+
+				}
+
+
+
+			}
+			return smallestx;
+
+
+		}
 
 
 
@@ -291,104 +278,102 @@ return smallestx;
 
 
 int readPoints(struct Point points[])
-{	char currentLabel;
-int currentX;
-int currentY;
-int pointsEle=0;
-int counter=0;
-int inputCounter=1;
-char buff[MAX_LINE];
-int numberOfPoints;
-printf("Number of points(3-100):");
-if(fgets(buff, MAX_LINE, stdin))
-{
+{	
 
-numberOfPoints= atoi(buff);
+	char currentLabel;
+	int currentX;
+	int currentY;
+	int pointsEle=0;
+	int counter=0;
+	int inputCounter=1;
+	char buff[MAX_LINE];
+	int numberOfPoints;
+	printf("Number of points(3-100):");
+	if(fgets(buff, MAX_LINE, stdin))
+	{
 
-if(numberOfPoints<MIN_POINTS || numberOfPoints>MAX_POINTS)
-{
-printf("Number of points must be between 3 and 100.\n");
-return 0;
+		numberOfPoints= atoi(buff);
 
-}
+		if(numberOfPoints<MIN_POINTS || numberOfPoints>MAX_POINTS)
+		{
+			printf("Number of points must be between 3 and 100.\n");
+			return 0;
 
-while(counter<numberOfPoints)
-{
-if(inputCounter==1)
-{
+		}
 
-printf("Enter label (character): ");
-if(fgets(buff, MAX_LINE, stdin))
-{
+		while(counter<numberOfPoints)
+		{
+			if(inputCounter==1)
+			{
 
-currentLabel=buff[0];
-inputCounter++;
+				printf("Enter label (character): ");
+				if(fgets(buff, MAX_LINE, stdin))
+				{
 
-}
-else
-{
-printf("\nError reading point label.\n");
-return 0;
+					currentLabel=buff[0];
+					inputCounter++;
 
-}
+				}
+				else
+				{
+					printf("\nError reading point label.\n");
+					return 0;
 
-
-}
-
-else if(inputCounter==2)
-{
-
-printf("Enter x (int): ");
-if(fgets(buff, MAX_LINE, stdin))
-{
-currentX=atoi(buff);
-inputCounter++;
-}
-else
-{
-printf("\nError reading x coordinate.\n");
-return 0;
-
-}
+				}
 
 
+			}
 
+			else if(inputCounter==2)
+			{
 
+				printf("Enter x (int): ");
+				if(fgets(buff, MAX_LINE, stdin))
+				{
+					currentX=atoi(buff);
+					inputCounter++;
+				}
+				else
+				{
+					printf("\nError reading x coordinate.\n");
+					return 0;
 
-}
-
-else
-{
-
-printf("Enter y (int): ");
-if(fgets(buff, MAX_LINE, stdin))
-{
-currentY=atoi(buff);
-points[pointsEle].label=currentLabel;
-points[pointsEle].x=currentX;
-points[pointsEle].y=currentY;
-pointsEle++;
-inputCounter=1;
-counter++;
-}
-else
-{
-
-printf("\nError reading y coordinate.\n");
-return 0;
-
-
-
-}
-
-}
-
-
-}
+				}
 
 
 
 
+
+			}
+
+			else
+			{
+
+				printf("Enter y (int): ");
+				if(fgets(buff, MAX_LINE, stdin))
+				{
+					currentY=atoi(buff);
+					points[pointsEle].label=currentLabel;
+					points[pointsEle].x=currentX;
+					points[pointsEle].y=currentY;
+					pointsEle++;
+					inputCounter=1;
+					counter++;
+				}
+				else
+				{
+
+					printf("\nError reading y coordinate.\n");
+					return 0;
+
+
+
+				}
+
+		}
+
+
+		}
 
 
 
@@ -396,19 +381,23 @@ return 0;
 
 
 
-}
-else
-{
-printf("\nError reading number of points.\n");
-return 0;
 
-}
+
+
+
+		}
+		else
+		{
+			printf("\nError reading number of points.\n");
+			return 0;
+
+		}
 
 
 
 
 //printf("%d number of points\n",numberOfPoints );
-return numberOfPoints;
+		return numberOfPoints;
 
 
 
@@ -418,21 +407,21 @@ return numberOfPoints;
 void swap(int a, int b, struct Point points[], int numPoints)
 {
 
-
-if((a<0) || (b<0) || (a>numPoints-1) || (b>numPoints) || (a==b))
-{
-
+	if((a<0) || (b<0) || (a>numPoints-1) || (b>numPoints) || (a==b))
+	{
 
 
 
-}
 
-else{
-struct Point P1=points[a];
-struct Point P2=points[b];
-points[a]=P2;
-points[b]=P1;	
-}
+	}
+
+	else
+	{
+		struct Point P1=points[a];
+		struct Point P2=points[b];
+		points[a]=P2;
+		points[b]=P1;	
+	}
 
 }
  
