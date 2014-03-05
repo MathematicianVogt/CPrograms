@@ -145,7 +145,7 @@ int quickHullRec(struct Point points[], struct Point l, struct Point r, int numP
     
 */
 
-    return size;
+    return Lsum+Rsum;
 
   }
    
@@ -204,7 +204,7 @@ int quickHull(struct Point points[], struct Point convexHull[],int numPoints)
    
    
    //printf("%d FINAL SUM\n", finalL+finalR );
-   return 2+finalL+finalR;
+   return size;
    
    
    
