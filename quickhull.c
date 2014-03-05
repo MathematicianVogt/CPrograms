@@ -36,24 +36,26 @@ void displayConvexPoints(struct Point points[], int numPoints){
 //@return number of slots filled
 int overridePThree(struct Point bigL[],int bigLSize,struct Point bigR[], int bigRsize, struct Point f, struct Point P[])
 {
+   int where=0;
    for(int i=0; i<bigLSize;i++)
    {
        
-       P[i]=bigL[i];
+       P[where++]=bigL[i];
        
    }
-   P[bigLSize]=f;
+   P[where++]=f;
    
-   for(int i= bigLSize+1; i<bigLSize+1+bigRsize; i++)
+   for(int i= 0; i<bigRsize; i++)
    {
        
        
-       P[i]=bigR[i-(bigLSize+1)];
+       P[where++]=bigR[i];
        
        
    }
-   
-   return bigLSize+bigRsize+1;
+
+   //printf("%d Number of threeP\n", where );
+   return where;
    
 }
 //take four arrays of certain pieces and combine them together
@@ -68,29 +70,28 @@ int overridePThree(struct Point bigL[],int bigLSize,struct Point bigR[], int big
 //@param the new size of P
 int overridePFour(struct Point l, struct Point bigL[],int bigLSize, struct Point r, struct Point bigR[], int bigRsize, struct Point P[])
 {
-   P[0]=l;
-   for(int i =1; i<bigLSize; i++)
+    int where=0;
+   P[where++]=l;
+   for(int i =0; i<bigLSize; i++)
    {
        
-       P[i]=bigL[i-1];
+       P[where++]=bigL[i];
        
        
    }
-   for(int i=bigLSize; i<bigLSize+bigRsize; i++)
-   {
-       
-       
-       P[i]=bigR[i-bigLSize];
-       
-       
-       
-   }
-   P[bigLSize+bigRsize]= r;
-   
-   return bigLSize+bigRsize+2;
   
-
-  int size=overridePFour(test,mypoints,1,test1, mypoints1, 1,testP);
+  P[where++]= r;
+   for(int i=0; i<bigRsize; i++)
+   {
+       
+       
+       P[where++]=bigR[i];
+       
+       
+   }
+  
+   return where;
+  
    
 }
 
@@ -99,22 +100,52 @@ int overridePFour(struct Point l, struct Point bigL[],int bigLSize, struct Point
 //@param P, the original set of points
 //@param l the left most point in P
 //@param r the right most point in P
-void quickHullRec(struct Point points[], struct Point l, struct Point r, int numPoints)
+int quickHullRec(struct Point points[], struct Point l, struct Point r, int numPoints)
 {
-   //if p is empty
+   
+  //printf("ALL THE POINTS\n");
+  //displayPoints(points,numPoints);
+
+
+   if(numPoints==0)
+   {
+
+      return 0;
+
+   }
 
   else
   {
 
-    struct Point f =furthestLeftPoint(l,r,points,numPoints);
+    struct Point f=furthestLeftPoint(l,r,points,numPoints);
     struct Point L[numPoints];
-    int Lsize=leftPointSet(l, r, points,numPoints,L);
+    int Lsize=leftPointSet(l, f, points,numPoints,L);
+    //printf("\nL\n");
+    //displayPoints(L,Lsize);
     struct Point R[numPoints];
-    int Rsize=leftPointSet(f,r points,numPoints,R);
-    quickHullRec(L,l,f);
-    quickHullRec(R,f,r);
-    overridePThree(L,Lsize,f,R,Rsize);
+    int Rsize=leftPointSet(f,r,points,numPoints,R);
+    //printf("\nR\n");
+    //displayPoints(R,Rsize);
 
+    int Lsum= quickHullRec(L,l,f,Lsize);
+    int Rsum= quickHullRec(R,f,r,Rsize);
+    int size=overridePThree(L,Lsize,R,Rsize,f,points);
+  
+
+  /*printf("==========dsd\n");  
+  displayPoints(L,Lsize);
+   printf("\n");
+   printf("yo");
+   displayPoint(f);
+   printf("\n");
+   displayPoints(R,Rsize);
+   printf("\n");
+    printf("QUICKHULLREC");
+    displayPoints(points,size);
+    
+*/
+
+    return size;
 
   }
    
@@ -132,20 +163,48 @@ int quickHull(struct Point points[], struct Point convexHull[],int numPoints)
 {
    
    struct Point mostLeftPoint=leftmostPoint(points,numPoints);
+   //printf("MOSTLEFT\n");
+   //displayPoint(mostLeftPoint);
+
    struct Point mostRightPoint=rightmostPoint(points,numPoints);
+   //printf("MOSTRIGHT\n");
+   //displayPoint(mostRightPoint);
    struct Point bigL[numPoints];
+   
+
    int bigLnumber=leftPointSet(mostLeftPoint,mostRightPoint,points,numPoints,bigL);
+   //printf("BIGLNUM %d \n",bigLnumber );
+   //printf("BIGL\n");
+   //displayPoints(bigL,bigLnumber);
+   //printf("BIGLEND\n");
+
    struct Point bigR[numPoints];
    int bigRnumber=leftPointSet(mostRightPoint,mostLeftPoint,points,numPoints,bigR);
+   // printf("BIGRNUM %d \n",bigRnumber );
+   //printf("BIGR\n");
+  //displayPoints(bigR,bigRnumber);
+  //printf("BIGREND\n");
    
-   quickHullRec(bigL,mostLeftPoint,mostRightPoint);
-   quickHullRec(bigR,mostRightPoint,mostLeftPoint);
-   overridePFour(mostLeftPoint,bigL,bigLnumber,mostRightPoint,bigR,bigRnumber,convexHull);
-  
+   int finalL=quickHullRec(bigL,mostLeftPoint,mostRightPoint,bigLnumber);
+   int finalR=quickHullRec(bigR,mostRightPoint,mostLeftPoint,bigRnumber);
+   int size=overridePFour(mostLeftPoint,bigL,bigLnumber,mostRightPoint,bigR,bigRnumber,convexHull);
+
+   //printf("ooverridePF\n");
+   //printf("QUICKHULL");
+   /*displayPoint(mostLeftPoint);
+   printf("\n");
+   displayPoints(bigL,bigLnumber);
+   printf("\n");
+   displayPoint(mostRightPoint);
+   printf("\n");
+   displayPoints(bigR,bigRnumber);
+   printf("\n");
+   displayPoints(convexHull,size);
+  */
    
    
-   
-   return 0;
+   //printf("%d FINAL SUM\n", finalL+finalR );
+   return 2+finalL+finalR;
    
    
    
@@ -158,31 +217,7 @@ int quickHull(struct Point points[], struct Point convexHull[],int numPoints)
 
 int main(void)
 {
-  struct Point testP[4];
-   struct Point mypoints[1];
-   struct Point mypoints1[1];
-  struct Point test;
-  test.x=3;
-  test.y=4;
-  test.label='a';
-  struct Point test1;
-  test1.x=1;
-  test1.y=1;
-  test1.label='b';
-  struct Point test2;
-  test2.x=2;
-  test2.y=3;
-  test2.label='c';
-  struct Point test3;
-  test3.x=6;
-  test3.y=4;
-  test3.label='c';
-  mypoints[0]=test3;
-  mypoints1[0]=test1;
-  
 
-  int size=overridePFour(test,mypoints,1,test1, mypoints1, 1,testP);
-  displayPoints(testP,size);
 
 
 

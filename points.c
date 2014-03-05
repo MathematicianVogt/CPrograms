@@ -7,6 +7,7 @@
 #include "points.h"
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 
 
 
@@ -124,40 +125,55 @@ return currentLargestStruct;
 
 struct Point furthestLeftPoint(struct Point a, struct Point z, struct Point points[], int numPoints)
 {
+ float triangleAREA;
+ struct Point furthestLeft;
+ int counter=0;
 
-struct Point currentSmallestxStruct;
-struct Point currentStruc;
-if(a.x<z.x)
+
+for(int i=0; i <numPoints; i++)
 {
-currentSmallestxStruct=a;
+
+if(ccw(a,z,points[i])>0)
+{
+
+	if(counter==0)
+	{	triangleAREA=(1/2)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
+		furthestLeft=points[i];
+		counter++;
+	}
+	else
+	{
+
+		if(triangleAREA>(1/2)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y)))
+		{
+
+
+		triangleAREA=(1/2)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
+		furthestLeft=points[i];
+
+		}
+
+
+
+	}
+
 
 
 }
-else
-{
 
-currentSmallestxStruct=a;
-
-
-}
-
-for(int i =0; i<numPoints; i++)
-{
-
-currentStruc=points[i];
-
-if(currentStruc.x<currentSmallestxStruct.x)
-{
-
-currentSmallestxStruct=currentStruc;
-
-}
 
 
 
 }
 
-return currentSmallestxStruct;
+//printf("FURTHESTLEFRT\n");
+//displayPoint(furthestLeft);
+//printf("FURTHESTLEFRT\n");
+
+
+return furthestLeft;
+
+
 
 }
 
@@ -167,37 +183,22 @@ int leftPointSet(struct Point a, struct Point z, struct Point points[], int numP
 {
 int numberOfPointsToTheLeft=0;
 int currentLpsele=0;
-struct Point pivotX;
-if(a.x<z.x)
-{
 
-pivotX=a;
-
-
-}
-else
-{
-
-
-pivotX=z;
-
-}
 for(int i=0; i<numPoints; i++)
 {
 
-struct Point currentOne=points[i];
-if(currentOne.x<pivotX.x)
-{
+	if(ccw(a,z,points[i])>0)
+	{
 
-lps[currentLpsele]=currentOne;
-currentLpsele++;
-numberOfPointsToTheLeft++;
-
-
-
-}
+		lps[currentLpsele]=points[i];
+		//printf("cross product point\n");
+		//displayPoint(points[i]);
+		currentLpsele++;
+		numberOfPointsToTheLeft++;
 
 
+
+	}
 
 
 }
