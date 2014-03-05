@@ -11,14 +11,14 @@
 
 void displayConvexPoints(struct Point points[], int numPoints){
 
-printf("Convex Hull:\n");
-for(int i=0; i<numPoints; i++)
-{
-struct Point currentPointToShow=points[i];
-printf("%c: (%d,%d)\n",currentPointToShow.label,currentPointToShow.x,currentPointToShow.y);
+	printf("Convex Hull:\n");
+	for(int i=0; i<numPoints; i++)
+	{
+		struct Point currentPointToShow=points[i];
+		printf("%c: (%d,%d)\n",currentPointToShow.label,currentPointToShow.x,currentPointToShow.y);
 
 
-}
+	}
 
 
 
@@ -31,62 +31,48 @@ printf("%c: (%d,%d)\n",currentPointToShow.label,currentPointToShow.x,currentPoin
 int jarvis(struct Point points[], struct Point convexHull[],int numPoints)
 {
 
-struct Point pointOnHull=leftmostPoint(points,numPoints);
-int i=0;
-struct Point endPoint;
-convexHull[i]=pointOnHull;
-while(!equal(endPoint,convexHull[0]))
-{
+	struct Point pointOnHull=leftmostPoint(points,numPoints);
+	int i=0;
+	struct Point endPoint;
+	do
+	{
+
+		convexHull[i]=pointOnHull;
+		endPoint=points[0];
+		for(int j=1; j<numPoints; j++)
+		{
+
+			if(equal(endPoint,pointOnHull) || (ccw(convexHull[i], endPoint,points[j])>0))
+			{
+   				endPoint=points[j];
 
 
-
-convexHull[i]=pointOnHull;
-
-
-endPoint=points[0];
-for(int j=1; j<numPoints; j++)
-{
-
-if(equal(endPoint,pointOnHull) || (ccw(convexHull[i], endPoint,points[j])>0))
-{
-   endPoint=points[j];
+			}			
 
 
-}
+		}		
+		i++;
+		pointOnHull=endPoint;
+
+	}
+	while(!equal(endPoint,convexHull[0]));
 
 
-}
-i++;
-pointOnHull=endPoint;
-
-}
-
-
-
-return i;
-
-
-
-
-
-
-
-
+	return i;
 
 }
 
 int main(void)
 {
-struct Point jarvisPoints[MAX_POINTS];
-int numberOfjarvisPoints=readPoints(jarvisPoints);
-if(numberOfjarvisPoints>0)
-{
-displayPoints(jarvisPoints,numberOfjarvisPoints);
-struct Point convexHullSet[numberOfjarvisPoints];
-int numberOfConvexPoints=jarvis(jarvisPoints,convexHullSet,numberOfjarvisPoints);
-displayConvexPoints(convexHullSet,numberOfConvexPoints);
-}
-
-
+	struct Point jarvisPoints[MAX_POINTS];
+	int numberOfjarvisPoints=readPoints(jarvisPoints);
+	
+	if(numberOfjarvisPoints>0)
+	{
+		displayPoints(jarvisPoints,numberOfjarvisPoints);
+		struct Point convexHullSet[numberOfjarvisPoints];
+		int numberOfConvexPoints=jarvis(jarvisPoints,convexHullSet,numberOfjarvisPoints);
+		displayConvexPoints(convexHullSet,numberOfConvexPoints);
+	}	
 
 }

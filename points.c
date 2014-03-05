@@ -156,6 +156,7 @@ if(ccw(a,z,points[i])>0)
 
 
 		triangleAREA=(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
+		furthestLeft=points[i];
 
 		}
 
@@ -435,10 +436,10 @@ points[b]=P1;
 
 }
  
-
-//int main( void ) {
-
 /*
+int main( void ) {
+
+
 struct Point a;
 struct Point b;
 a.x=1;
@@ -446,7 +447,7 @@ a.y=1;
 b.x=6;
 b.y=6;
 
-struct Point allPoints[4];
+struct Point allPoints[2];
 struct Point c;
 struct Point d;
 struct Point e;
@@ -461,11 +462,11 @@ f.x=-5;
 f.y=2;
 allPoints[0]=c;
 allPoints[1]=d;
-allPoints[2]=e;
-allPoints[3]=f;
-struct Point show[4];
-int size=leftPointSet(a,b,allPoints,4,show);
-struct Point this=furthestLeftPoint(a,b,allPoints,4);
+//allPoints[2]=e;
+//allPoints[3]=f;
+struct Point show[2];
+int size=leftPointSet(a,b,allPoints,2,show);
+struct Point this=furthestLeftPoint(a,b,allPoints,2);
 displayPoint(this);
 displayPoints(show,size);
 */
