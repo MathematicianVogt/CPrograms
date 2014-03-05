@@ -116,8 +116,8 @@ int quickHullRec(struct Point points[], struct Point l, struct Point r, int numP
   {
 
     struct Point f=furthestLeftPoint(l,r,points,numPoints);
-    printf("DIPLAYFURTHEST\n" );
-    displayPoint(f);
+    //printf("DIPLAYFURTHEST\n" );
+    //displayPoint(f);
 
 
     struct Point L[numPoints];
@@ -126,8 +126,8 @@ int quickHullRec(struct Point points[], struct Point l, struct Point r, int numP
     //displayPoints(L,Lsize);
     struct Point R[numPoints];
     int Rsize=leftPointSet(f,r,points,numPoints,R);
-    printf("\nR\n");
-    displayPoints(R,Rsize);
+    //printf("\nR\n");
+    //displayPoints(R,Rsize);
 
     int Lsum= quickHullRec(L,l,f,Lsize);
     int Rsum= quickHullRec(R,f,r,Rsize);
@@ -165,29 +165,29 @@ int quickHull(struct Point points[], struct Point convexHull[],int numPoints)
 {
    
    struct Point mostLeftPoint=leftmostPoint(points,numPoints);
-   printf("MOSTLEFT\n");
-   displayPoint(mostLeftPoint);
-   printf("\n");
+   //printf("MOSTLEFT\n");
+   //displayPoint(mostLeftPoint);
+   //printf("\n");
 
    struct Point mostRightPoint=rightmostPoint(points,numPoints);
-   printf("MOSTRIGHT\n");
-   displayPoint(mostRightPoint);
-   printf("\n");
+   //printf("MOSTRIGHT\n");
+   //displayPoint(mostRightPoint);
+   //printf("\n");
    struct Point bigL[numPoints];
    
 
    int bigLnumber=leftPointSet(mostLeftPoint,mostRightPoint,points,numPoints,bigL);
-   printf("BIGLNUM %d \n",bigLnumber );
-   printf("BIGL\n");
-   displayPoints(bigL,bigLnumber);
-   printf("BIGLEND\n");
+   //printf("BIGLNUM %d \n",bigLnumber );
+   //printf("BIGL\n");
+   //displayPoints(bigL,bigLnumber);
+   //printf("BIGLEND\n");
 
    struct Point bigR[numPoints];
    int bigRnumber=leftPointSet(mostRightPoint,mostLeftPoint,points,numPoints,bigR);
-   printf("BIGRNUM %d \n",bigRnumber );
-   printf("BIGR\n");
-   displayPoints(bigR,bigRnumber);
-   printf("BIGREND\n");
+   //printf("BIGRNUM %d \n",bigRnumber );
+   //printf("BIGR\n");
+   //displayPoints(bigR,bigRnumber);
+   //printf("BIGREND\n");
    
    int finalL=quickHullRec(bigL,mostLeftPoint,mostRightPoint,bigLnumber);
    int finalR=quickHullRec(bigR,mostRightPoint,mostLeftPoint,bigRnumber);
