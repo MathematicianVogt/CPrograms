@@ -131,25 +131,31 @@ struct Point furthestLeftPoint(struct Point a, struct Point z, struct Point poin
 
 
 for(int i=0; i <numPoints; i++)
-{
+{	
+
+
 
 if(ccw(a,z,points[i])>0)
 {
 
 	if(counter==0)
-	{	triangleAREA=(1/2)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
+	{	triangleAREA=(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
 		furthestLeft=points[i];
 		counter++;
+		//printf("TRIANGLEAREA:%f\n",triangleAREA );
+
+
+
 	}
 	else
 	{
+		
 
-		if(triangleAREA>(1/2)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y)))
+		if(triangleAREA<(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y)))
 		{
 
 
-		triangleAREA=(1/2)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
-		furthestLeft=points[i];
+		triangleAREA=(.5)* abs((a.x - points[i].x) * (z.y-a.y) - (a.x - z.x)* (points[i].y - a.y));
 
 		}
 
@@ -430,9 +436,40 @@ points[b]=P1;
 }
  
 
-/*int main( void ) {
+//int main( void ) {
 
-struct Point myPoints[5];
+/*
+struct Point a;
+struct Point b;
+a.x=1;
+a.y=1;
+b.x=6;
+b.y=6;
+
+struct Point allPoints[4];
+struct Point c;
+struct Point d;
+struct Point e;
+struct Point f;
+c.x=10;
+c.y=5;
+d.x=1;
+d.y=5;
+e.x=-1;
+e.y=2;
+f.x=-5;
+f.y=2;
+allPoints[0]=c;
+allPoints[1]=d;
+allPoints[2]=e;
+allPoints[3]=f;
+struct Point show[4];
+int size=leftPointSet(a,b,allPoints,4,show);
+struct Point this=furthestLeftPoint(a,b,allPoints,4);
+displayPoint(this);
+displayPoints(show,size);
+*/
+/*struct Point myPoints[5];
 struct Point test;
 test.label='a';
 test.x=6;
@@ -459,6 +496,6 @@ displayPoint(lowestPoint(myPoints,mypoints));
 printf("============\n");
 displayPoint(makeVector(test1,test2));
 printf("%d\n",ccw(test,test2,test1));
-return( 0 );
-}
 */
+//return( 0 );
+//}
