@@ -22,6 +22,29 @@ typedef struct TreeNode {
         POSTORDER
     } TraversalType;
 
+
+
+void cleanup_tree(TreeNode* root)
+{
+
+	if(*root==NULL)
+	{
+
+
+	}
+	else
+	{
+		postorder((*root)->left);
+		postorder((*root)->right);
+		free(root);
+
+
+	}
+
+
+
+
+}
 //a function that takes a root, a list of leaves, and the number of leaves
 //-root the root of the BST, assumed to be first element of list
 //-elements holds all elements that will be placed in the tree
@@ -48,10 +71,10 @@ void insert(TreeNode** root, const int x)
    {
 		if(x<=(*root)->data)
 		{
-			root=(*root)->left;
+			root=&((*root)->left);
 		}
 		else{
-			root=(*root)->right;
+			root=&((*root)->right);
 		}
 
    }
@@ -62,13 +85,90 @@ void insert(TreeNode** root, const int x)
    (*root)->right=NULL;
 }
 
+//takes a BST and prints it out using pre order, using recursion
+void preorder(TreeNode* root)
+{
+	
+
+	if(*root==NULL)
+	{
+
+
+	}
+	else
+	{
+	printf("%d\n",root->data);
+	preorder(root->left);
+	preorder(root->right);
+	}
+}
+//takes a BST starting with a root and prints it out using post order recursion
+void postorder(TreeNode* root)
+{
+
+	if(*root==NULL)
+	{
+
+
+	}
+	else
+	{
+		postorder(root->left);
+		postorder(root->right);
+		printf("%d\n",(*root)->data );
+
+
+	}
+
+}
+
+//takes a root of a BTS and prints it out in in-order with recursion
+void inorder(TreeNode* root)
+{
+	if(*root==NULL)
+	{
+
+	}
+	else
+	{
+		preorder(root->left);
+		printf("%d\n",root->data);
+		preorder(*root->right);
+	}
+
+}
+
+
+
+
+
+
 //travers through a tree using the root as a starting point based on a type of transversal
 //root, the BST
 //type the type of transversal to take place, based on ENUM value. 
 void traverse(const TreeNode* root, const TraversalType type)
 {
+	if(type==PREORDER)
+	{
+		printf("Preorder:\n");
+		preorder(*root);
 
 
+	}
+	if(type==INORDER)
+	{
+		printf("Inorder:\n");
+		inorder(*root);
+
+
+	}
+	if(type==POSTORDER)
+	{
+		printf("Postorder:\n");
+		postorder(*root);
+
+
+	}
 
 
 
@@ -92,8 +192,8 @@ int main(int argc, char *argv[])
  		{
 
  			printf("# must be greater than 0\n");
+ 			
  			return 0;
-
 
  		}
  		
@@ -122,6 +222,9 @@ int main(int argc, char *argv[])
 
 		TreeNode* myRoot=NULL;
 		build_tree(&myRoot,nodeinputs,numberOfInputs);
+		traverse(myRoot,PREORDER);
+		traverse(myRoot,INORDER);
+		traverse(myRoot,POSTORDER);
 
 
 
