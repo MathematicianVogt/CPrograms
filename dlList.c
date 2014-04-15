@@ -222,18 +222,37 @@
 		
 		bool goingUp(DlList_T lst,int indx,int decisionNumber)
 		{
+			if((lst->myCurrentNodeLocation)->currentNodeLocation==NULL)
+			{
+				struct node* currentNodePointer=lst->headOfQueue;
 
-			struct node* currentNodePointer=lst->headOfQueue;
+				for(int i=1; i<decisionNumber; i++)
+				{
 
-			for(int i=0; i<decisionNumber; i++)
+					currentNodePointer=currentNodePointer->next;
+
+				}
+				lst->myCurrentNodeLocation->currentNodeLocation=currentNodePointer;
+				lst->myCurrentNodeLocation->currentNodeNumber=indx;
+				return 1;
+			}
+			else
 			{
 
-				currentNodePointer=currentNodePointer->next;
+				struct node* currentNodePointer=lst->headOfQueue;
+
+				for(int i=0; i<decisionNumber; i++)
+				{
+
+					currentNodePointer=currentNodePointer->next;
+
+				}
+				lst->myCurrentNodeLocation->currentNodeLocation=currentNodePointer;
+				lst->myCurrentNodeLocation->currentNodeNumber=indx;
+				return 1;
+
 
 			}
-			lst->myCurrentNodeLocation->currentNodeLocation=currentNodePointer;
-			lst->myCurrentNodeLocation->currentNodeNumber=indx;
-			return 1;
 
 		}
 		bool goingDown(DlList_T lst, int indx,int decisionNumber)
@@ -309,7 +328,7 @@
 
 
 			printf("DATA IN CURSOR %d\n",(int) ((myList->myCurrentNodeLocation)->currentNodeLocation)->data);
-			printf("CURSOR P %d\n",(int) (myList->myCurrentNodeLocation)->currentNodeNumber);
+			printf("POINT SPACE %d\n",(int) (myList->myCurrentNodeLocation)->currentNodeNumber);
 
 
 		}
