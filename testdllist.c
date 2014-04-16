@@ -14,17 +14,17 @@ void getNodeData(struct node* myNode);
 		{
 
 			DlList_T myList =dll_create();
-			int one=1;
-			int two=2;
-			int three=3;
-			int four=4;
-			int five=5;
+			char one='a';
+			char two='b';
+			char three='c';
+			char four='d';
+			char five='e';
 			dll_append(myList,(void *) one);
 			dll_append(myList,(void *) two);
 			dll_append(myList,(void *) three);
 			dll_append(myList,(void *) four);
 			dll_append(myList,(void *) five);
-			//dll_insert_at(myList,4,(void * ) 76);
+			dll_insert_at(myList,4,(void * ) 'z');
 			/*dll_pop(myList,1);
 			dll_pop(myList,5);
 			dll_pop(myList,3);
@@ -43,8 +43,8 @@ void getNodeData(struct node* myNode);
 */			//getNodeData(dll_get(myList,2));
 			//printf("%d\n",dll_index(myList,(void *) 76) );
 			printList(myList);
-			//dll_set(myList,4,(void*) 55);
-			//printList(myList);
+			dll_set(myList,4,(void*) 55);
+			printList(myList);
 			//printf("SIZE IS %d\n",dll_size(myList));
 			
 			

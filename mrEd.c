@@ -3,13 +3,14 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include "dlList.h"
+#include <string.h>
 
 #define MAX_LINE 50
 
 
 
 	void printList(DlList_T list);
-	
+
 	bool file_exists(const char * filename)
 	{
 	    
@@ -23,6 +24,72 @@
 		}
 	}
 
+	
+	void startLookingforInput(DlList_T lst)
+	{
+		int hasChanged=0;
+		int looping=1;
+		char buff[MAX_LINE];
+		while(looping)
+ 		{
+ 			fgets(buff,MAX_LINE, stdin);
+ 			strtok(buff,"\n");
+			if(strcmp(buff,"Q")==0)
+			{
+
+				dll_destroy(lst);
+				break;
+
+
+
+			}
+			else if(strcmp(buff,"a")==0)
+			{
+
+				int currentlooping=1;
+				while(currentlooping)
+				{
+					fgets(buff,MAX_LINE, stdin);
+					strtok(buff,"\n");
+					printf("THIS %s\n",buff );
+					if(strcmp(buff,".")==0)
+					{
+						printf("DONE\n");
+						break;
+
+					}
+					else
+					{
+					
+						void* input=malloc(sizeof(char)*(strlen(buff)));
+						memcpy(input,buff,strlen(buff));
+						dll_append(lst, input);
+						printList(lst);
+
+					}
+
+
+
+				}
+
+
+
+			}
+			
+			else if(strcmp(buff, "\n")==0 || strcmp(buff,"+")==0)
+			{
+
+				break;
+
+			}
+
+		}
+
+		printf("DONE\n");
+
+
+
+	}
 	DlList_T readAndCreateStruct(const char * filename)
 	{
 		
@@ -39,15 +106,18 @@
 
 			while(getline(&buf, &n, pFile)!=-1)
 			{	
-				
-				printf("%s",buf);
-				dll_append(myList,(void *) buf);
+				strtok(buf,"\n");
+				void* input=malloc(sizeof(char)*(strlen(buf)));
+				memcpy(input,buf,strlen(buf));
+				dll_append(myList, input);
 			}
 		
 			printList(myList);
 			free(buf);
 			fclose(pFile);
 		}
+		dll_move_to(myList,dll_size(myList));
+		startLookingforInput(myList);
 
 
 
@@ -69,7 +139,7 @@
 	int main(int argc, char *argv[])
 	{
 		
-		printf("%s\n", argv[1] );
+		//printf("%s\n", argv[1] );
 		if(argc<2)
 		{
 

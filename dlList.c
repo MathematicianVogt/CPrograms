@@ -123,7 +123,7 @@
 
 				}
 
-				printf("%d\n", (int) currentNode->data );
+				printf("%s\n", (char *) (currentNode->data) );
 				currentNode=currentNode->next;
 
 
@@ -134,7 +134,7 @@
 			while(backwardStart!=NULL)
 			{
 
-				printf("%d\n",  (int) backwardStart->data );
+				printf("%s\n",  (char *) (backwardStart->data) );
 				backwardStart=backwardStart->previous;
 
 
