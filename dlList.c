@@ -185,7 +185,7 @@
 			{
 				if(currentNode->next==NULL)
 				{
-					printf("FREED %d\n", (int )currentNode->data );
+					//printf("FREED %d\n", (int )currentNode->data );
 					free(currentNode);
 					break;
 
@@ -193,7 +193,7 @@
 				}
 
 				struct node* nextNode=currentNode->next;
-				printf("FREED %d\n", (int )currentNode->data );
+				//printf("FREED %d\n", (int )currentNode->data );
 				free(currentNode);
 				currentNode=nextNode;
 			}
@@ -254,12 +254,13 @@
 			else
 			{
 
-				struct node* currentNodePointer=lst->headOfQueue;
+				struct node* currentNodePointer=lst->myCurrentNodeLocation->currentNodeLocation;
 
 				for(int i=0; i<decisionNumber; i++)
 				{
 
 					currentNodePointer=currentNodePointer->next;
+					//printf("THE DATA YO %s\n", (char *) (currentNodePointer->data));
 
 				}
 				lst->myCurrentNodeLocation->currentNodeLocation=currentNodePointer;
@@ -304,6 +305,7 @@
 			{
 				int currentNodePosition=(lst->myCurrentNodeLocation)->currentNodeNumber;
 				int decisionNumber=indx-currentNodePosition;
+				//printf("NUMBER %d\n", decisionNumber);
 				if(decisionNumber==0)
 				{
 
@@ -345,8 +347,8 @@
 		{
 
 
-			printf("DATA IN CURSOR %d\n",(int) ((myList->myCurrentNodeLocation)->currentNodeLocation)->data);
-			printf("POINT SPACE %d\n",(int) (myList->myCurrentNodeLocation)->currentNodeNumber);
+			printf("%s\n",(char*) (((myList->myCurrentNodeLocation)->currentNodeLocation)->data));
+			
 
 
 		}
@@ -602,6 +604,70 @@
 
 			return currentNode;
 
+
+
+
+		}
+		struct node* getNext(DlList_T lst)
+		{
+
+
+			return ((lst->myCurrentNodeLocation)->currentNodeLocation)->next;
+
+		}
+		struct node* getPrevious(DlList_T lst)
+		{
+
+
+			return ((lst->myCurrentNodeLocation)->currentNodeLocation)->previous;
+
+		}
+		int getCursorNumber(DlList_T lst)
+		{
+
+			return (lst->myCurrentNodeLocation)->currentNodeNumber;
+		}
+		struct node* getHead(DlList_T lst)
+		{
+
+
+			return lst->headOfQueue;
+
+
+		}
+		void printListForward(DlList_T lst)
+		{
+
+			struct node* currentNode = list->headOfQueue;
+			if(currentNode==NULL)
+			{
+
+				printf("Nothing in list\n");
+
+			}
+			else
+			{
+				struct node* backwardStart=NULL;
+			
+
+				printf("FORWARD:\n");
+				while(currentNode!=NULL)
+				{
+
+					if(currentNode->next==NULL)
+					{
+				
+						backwardStart=currentNode;
+
+					}
+
+				printf("%s\n", (char *) (currentNode->data) );
+				currentNode=currentNode->next;
+
+
+
+
+			}
 
 
 

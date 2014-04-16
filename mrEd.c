@@ -10,6 +10,12 @@
 
 
 	void printList(DlList_T list);
+	void showCursor(DlList_T myList);
+	struct node* getNext(DlList_T lst);
+	int getCursorNumber(DlList_T lst);
+	struct node* getPrevious(DlList_T lst);
+	struct node* getHead(DlList_T lst);
+	void printListForward(DlList_T lst);
 
 	bool file_exists(const char * filename)
 	{
@@ -43,6 +49,12 @@
 
 
 			}
+			else if(strcmp(buff,".")==0)
+			{
+				showCursor(lst);
+
+			}
+
 			else if(strcmp(buff,"a")==0)
 			{
 
@@ -51,10 +63,9 @@
 				{
 					fgets(buff,MAX_LINE, stdin);
 					strtok(buff,"\n");
-					printf("THIS %s\n",buff );
 					if(strcmp(buff,".")==0)
 					{
-						printf("DONE\n");
+						
 						break;
 
 					}
@@ -64,7 +75,10 @@
 						void* input=malloc(sizeof(char)*(strlen(buff)));
 						memcpy(input,buff,strlen(buff));
 						dll_append(lst, input);
-						printList(lst);
+						dll_move_to(lst,dll_size(lst));
+						//printf("SIZE %d\n",dll_size(lst) );
+						//showCursor(lst);
+						//printList(lst);
 
 					}
 
@@ -78,8 +92,88 @@
 			
 			else if(strcmp(buff, "\n")==0 || strcmp(buff,"+")==0)
 			{
+				if(getNext(lst)!=NULL)
+				{
 
-				break;
+					dll_move_to(lst,getCursorNumber(lst) +1);
+
+
+
+				}
+				else
+				{
+					printf("?\n" );
+
+				}
+				
+
+			}
+			else if(strcmp(buff,"-")==0)
+			{
+
+				if(getPrevious(lst)!=NULL)
+				{
+
+					dll_move_to(lst,getCursorNumber(lst) -1);
+
+
+
+				}
+
+
+
+			}
+			else if(strcmp(buff,"$")==0)
+			{
+
+				if(getHead(lst)==NULL)
+				{
+
+					printf("?\n");
+
+				}
+				else
+				{
+
+				dll_move_to(lst,dll_size(lst));
+				showCursor(lst);
+				}
+
+			}
+			//NEEDS WORKS
+			else if(isdigit(buff))
+			{	printf("GOT HERE\n");
+				int newIndex=atoi(buff);
+				if(newIndex>=1 && newIndex<=dll_size(lst))
+				{
+
+					dll_move_to(lst,newIndex);
+
+				}
+
+
+
+			}
+			else if(strcmp(buff,".=")==0)
+			{
+
+
+				printf("%d\n",getCursorNumber(lst));
+
+			}
+			else if(strcmp(buff,"$=")==0)
+			{
+
+				printf("%d\n",dll_size(lst));
+
+
+			}
+			else if(strcmp(buff,"p")==0)
+			{
+				printf("GOT HERE\n");
+				printListForward(lst);
+				dll_move_to(lst,dll_size(lst));
+
 
 			}
 
@@ -108,11 +202,12 @@
 			{	
 				strtok(buf,"\n");
 				void* input=malloc(sizeof(char)*(strlen(buf)));
+				printf("%s\n",buf );
 				memcpy(input,buf,strlen(buf));
 				dll_append(myList, input);
 			}
 		
-			printList(myList);
+			//printList(myList);
 			free(buf);
 			fclose(pFile);
 		}
