@@ -1,0 +1,436 @@
+abc3c3d6 » MathematicianVogt 
+2014-04-15 first		1	#include <stdio.h>
+2	#include <stdlib.h>
+3	#include <ctype.h>
+4	#include <stdbool.h>
+bf4fd55f » MathematicianVogt 
+2014-04-16 testdll and dllist is done		5	#include "dlList.h"
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		6	#include <string.h>
+bf4fd55f » MathematicianVogt 
+2014-04-16 testdll and dllist is done		7	
+8	#define MAX_LINE 50
+9	
+10	
+11	
+12		void printList(DlList_T list);
+35592f9f » MathematicianVogt 
+2014-04-16 works		13		void showCursor(DlList_T myList);
+14		struct node* getNext(DlList_T lst);
+15		int getCursorNumber(DlList_T lst);
+16		struct node* getPrevious(DlList_T lst);
+17		struct node* getHead(DlList_T lst);
+18		void printListForward(DlList_T lst);
+f26dd828 » MathematicianVogt 
+2014-04-16 DONE		19		struct node* nextNode(struct node* thisNode);
+20		void* getData(struct node* thisNode);
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		21	
+bf4fd55f » MathematicianVogt 
+2014-04-16 testdll and dllist is done		22		bool file_exists(const char * filename)
+23		{
+24		    
+25		    FILE *fp = fopen(filename,"r");
+26			if( fp ) {
+27				return 1;
+28				fclose(fp);
+29			} 
+30			else {
+31				return 0;
+32			}
+33		}
+34	
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		35		
+f26dd828 » MathematicianVogt 
+2014-04-16 DONE		36		void startLookingforInput(DlList_T lst,const char * filename)
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		37		{
+38			int hasChanged=0;
+39			int looping=1;
+40			char buff[MAX_LINE];
+41			while(looping)
+42	 		{
+43	 			fgets(buff,MAX_LINE, stdin);
+44	 			strtok(buff,"\n");
+45				if(strcmp(buff,"Q")==0)
+46				{
+47	
+48					dll_destroy(lst);
+49					break;
+50	
+51	
+52	
+53				}
+35592f9f » MathematicianVogt 
+2014-04-16 works		54				else if(strcmp(buff,".")==0)
+55				{
+56					showCursor(lst);
+57	
+58				}
+59	
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		60				else if(strcmp(buff,"a")==0)
+61				{
+62	
+63					int currentlooping=1;
+64					while(currentlooping)
+65					{
+66						fgets(buff,MAX_LINE, stdin);
+67						strtok(buff,"\n");
+68						if(strcmp(buff,".")==0)
+69						{
+35592f9f » MathematicianVogt 
+2014-04-16 works		70							
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		71							break;
+72	
+73						}
+74						else
+75						{
+76						
+77							void* input=malloc(sizeof(char)*(strlen(buff)));
+78							memcpy(input,buff,strlen(buff));
+79							dll_append(lst, input);
+35592f9f » MathematicianVogt 
+2014-04-16 works		80							dll_move_to(lst,dll_size(lst));
+f26dd828 » MathematicianVogt 
+2014-04-16 DONE		81							hasChanged=1;
+35592f9f » MathematicianVogt 
+2014-04-16 works		82							//printf("SIZE %d\n",dll_size(lst) );
+83							//showCursor(lst);
+84							//printList(lst);
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		85	
+86						}
+87	
+88	
+89	
+90					}
+91	
+92	
+93	
+94				}
+95				
+96				else if(strcmp(buff, "\n")==0 || strcmp(buff,"+")==0)
+97				{
+35592f9f » MathematicianVogt 
+2014-04-16 works		98					if(getNext(lst)!=NULL)
+99					{
+100	
+101						dll_move_to(lst,getCursorNumber(lst) +1);
+102	
+103	
+104	
+105					}
+106					else
+107					{
+108						printf("?\n" );
+109	
+110					}
+111					
+112	
+113				}
+114				else if(strcmp(buff,"-")==0)
+115				{
+116	
+117					if(getPrevious(lst)!=NULL)
+118					{
+119	
+120						dll_move_to(lst,getCursorNumber(lst) -1);
+121	
+122	
+123	
+124					}
+125	
+126	
+127	
+128				}
+129				else if(strcmp(buff,"$")==0)
+130				{
+131	
+132					if(getHead(lst)==NULL)
+133					{
+134	
+135						printf("?\n");
+136	
+137					}
+138					else
+139					{
+140	
+141					dll_move_to(lst,dll_size(lst));
+142					showCursor(lst);
+143					}
+144	
+145				}
+146				//NEEDS WORKS
+147				else if(isdigit(buff))
+148				{	printf("GOT HERE\n");
+149					int newIndex=atoi(buff);
+150					if(newIndex>=1 && newIndex<=dll_size(lst))
+151					{
+152	
+153						dll_move_to(lst,newIndex);
+154	
+155					}
+156	
+157	
+158	
+159				}
+160				else if(strcmp(buff,".=")==0)
+161				{
+162	
+163	
+164					printf("%d\n",getCursorNumber(lst));
+165	
+166				}
+167				else if(strcmp(buff,"$=")==0)
+168				{
+169	
+170					printf("%d\n",dll_size(lst));
+171	
+172	
+173				}
+174				else if(strcmp(buff,"p")==0)
+175				{
+176					printListForward(lst);
+177					dll_move_to(lst,dll_size(lst));
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		178	
+179	
+180				}
+f26dd828 » MathematicianVogt 
+2014-04-16 DONE		181				else if(strcmp(buff,"q")==0)
+182				{
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		183	
+f26dd828 » MathematicianVogt 
+2014-04-16 DONE		184					if(hasChanged)
+185					{
+186	
+187						printf("? buffer dirty\n");
+188	
+189					}
+190					else
+191					{
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		192	
+f26dd828 » MathematicianVogt 
+2014-04-16 DONE		193						dll_destroy(lst);
+194						printf("\n");
+195						printf("Bye\n");
+196						break;
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		197	
+198	
+199	
+f26dd828 » MathematicianVogt 
+2014-04-16 DONE		200					}
+201	
+202	
+203	
+204				}
+205				else if(strcmp(buff,"w")==0)
+206				{
+207	
+208	
+209					FILE* pFile = fopen(filename, "w");
+210					if (!pFile) {
+211						perror("The following error occurred:");
+212					} else {
+213						struct node* headNode=getHead(lst);
+214	
+215						while(headNode!=NULL)
+216						{
+217							
+218							fprintf(pFile, strcat((char *) (getData(headNode)),"\n"));
+219							headNode=nextNode(headNode);
+220						
+221						
+222						}
+223						printf("%s:file\n",filename );
+224						hasChanged=0;
+225						fclose(pFile);
+226	
+227	
+228				}
+229	
+230	
+231				}
+232				else if(strcmp(buff,"wq")==0)
+233				{
+234					FILE* pFile = fopen(filename, "w");
+235					if (!pFile) {
+236						perror("The following error occurred:");
+237					} 
+238					else {
+239						struct node* headNode=getHead(lst);
+240	
+241						while(headNode!=NULL)
+242						{
+243							
+244							printf("%s\n", (char *) (getData(headNode)) );
+245							fprintf(pFile, strcat((char *) (getData(headNode)),"\n"));
+246							headNode=nextNode(headNode);
+247						
+248						
+249						}
+250						printf("%s:file\n",filename );
+251						hasChanged=0;
+252						fclose(pFile);
+253						dll_destroy(lst);
+254						printf("\n");
+255						printf("Bye\n");
+256						break;
+257	
+258	
+259	
+260	
+261	
+262					}
+263				}
+264				else if(strcmp(buff,"i")==0)
+265				{	
+266					printf("HIT\n");
+267			
+268					int looping=1;
+269					while(looping)
+270					{
+271						fgets(buff,MAX_LINE, stdin);
+272						printf("HERE\n");
+273						printf(" HERE DUDE %s\n",buff );
+274						printf("%d\n",strcmp(buff,".") );
+275						
+276						if(strcmp(buff,".")==10)
+277						{
+278							printf("DONE\n");
+279							break;
+280	
+281						}
+282						else
+283						{
+284							printf("THE DATA %s\n", buff );
+285							dll_insert_at(lst,getCursorNumber(lst),(void *) buff);
+286							dll_move_to(lst,getCursorNumber(lst));
+287	
+288	
+289						}
+290		
+291	
+292					}
+293					
+294					
+295		
+296	
+297	
+298	
+299				}
+300				else if(strcmp(buff,"d")==0)
+301				{
+302					printf("HITIN\n");
+303					dll_pop(lst,getCursorNumber(lst));
+304	
+305	
+306	
+307				}
+308				else 
+309				{
+310					printf(" LOOK %s\n",buff );
+311				}
+312	}
+313	}
+314		
+315		void readAndCreateStruct(const char * filename)
+bf4fd55f » MathematicianVogt 
+2014-04-16 testdll and dllist is done		316		{
+317			
+318			DlList_T myList=dll_create();
+319			FILE* pFile = fopen(filename, "r");
+320			if (!pFile) {
+321				perror("The following error occurred:");
+322			} 
+323			else {
+324				char* buf = (char*) malloc(sizeof(char) * MAX_LINE);
+325				size_t n=MAX_LINE;
+326				
+327	
+328	
+329				while(getline(&buf, &n, pFile)!=-1)
+330				{	
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		331					strtok(buf,"\n");
+332					void* input=malloc(sizeof(char)*(strlen(buf)));
+35592f9f » MathematicianVogt 
+2014-04-16 works		333					printf("%s\n",buf );
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		334					memcpy(input,buf,strlen(buf));
+335					dll_append(myList, input);
+bf4fd55f » MathematicianVogt 
+2014-04-16 testdll and dllist is done		336				}
+337			
+35592f9f » MathematicianVogt 
+2014-04-16 works		338				//printList(myList);
+bf4fd55f » MathematicianVogt 
+2014-04-16 testdll and dllist is done		339				free(buf);
+340				fclose(pFile);
+341			}
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		342			dll_move_to(myList,dll_size(myList));
+f26dd828 » MathematicianVogt 
+2014-04-16 DONE		343			startLookingforInput(myList,filename);
+bf4fd55f » MathematicianVogt 
+2014-04-16 testdll and dllist is done		344	
+345	
+346	
+347	
+348		}
+349		void hasExplictparam(const char * filename)
+350		{
+351			
+352			readAndCreateStruct(filename);
+353	
+354	
+355		}	
+356		void noExplictparam()
+357		{
+358	
+359	
+360		}
+361	
+362		int main(int argc, char *argv[])
+363		{
+364			
+26e17c11 » MathematicianVogt 
+2014-04-16 append and destroy works		365			//printf("%s\n", argv[1] );
+bf4fd55f » MathematicianVogt 
+2014-04-16 testdll and dllist is done		366			if(argc<2)
+367			{
+368	
+369	
+370				noExplictparam();
+371	
+372	
+373			}
+374			else
+375			{
+376	
+377				if(file_exists(argv[1]))
+378				{
+379					hasExplictparam(argv[1]);
+380	
+381				}
+382				else
+383				{
+384					printf("could not read ﬁle ’actual-ﬁle-name\n");
+385	
+386				}
+387	
+388				
+389	
+390			}
+391			return 0;
+392	
+393	
+394	
+395	
+396		}
