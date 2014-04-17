@@ -510,12 +510,34 @@
 			//getNodeData(next);
 			
 			
-			if(previous==NULL)
+			if(lst->headOfQueue==NULL)
 			{
+				(lst->myCurrentNodeLocation)->currentNodeLocation=NULL;
+				(lst->myCurrentNodeLocation)->currentNodeNumber=0;
+
+
+
+
+			}
+
+
+			else if(previous==NULL && next==NULL)
+			{
+				printf("HERES\n");
+				lst->headOfQueue=NULL;
+
+
+			}
+			else if(previous==NULL)
+			{
+				
 				lst->headOfQueue=next;
-				(lst->headOfQueue)->previous=NULL;
+				next->previous=NULL;
 				void * popData=((lst->myCurrentNodeLocation)->currentNodeLocation)->data;
 				free((lst->myCurrentNodeLocation)->currentNodeLocation);
+				(lst->myCurrentNodeLocation)->currentNodeLocation=lst->headOfQueue;
+				(lst->myCurrentNodeLocation)->currentNodeNumber=indx;
+
 			}
 			
 			else if(next==NULL)
@@ -524,6 +546,8 @@
 				void * popData=((lst->myCurrentNodeLocation)->currentNodeLocation)->data;
 				previous->next=NULL;
 				free((lst->myCurrentNodeLocation)->currentNodeLocation);
+				(lst->myCurrentNodeLocation)->currentNodeLocation=previous;
+				(lst->myCurrentNodeLocation)->currentNodeNumber=indx;
 
 
 			}
@@ -533,7 +557,11 @@
 				previous->next=next;
 				next->previous=previous;
 				free((lst->myCurrentNodeLocation)->currentNodeLocation);
+				(lst->myCurrentNodeLocation)->currentNodeLocation=next;
+				(lst->myCurrentNodeLocation)->currentNodeNumber=indx;
 			}
+
+			printf("CURSOR NOW AT %s\n", (char *) (((lst->myCurrentNodeLocation)->currentNodeLocation)->data) );
 			return popData;
 
 	
@@ -627,18 +655,10 @@
 
 			return (lst->myCurrentNodeLocation)->currentNodeNumber;
 		}
-		struct node* getHead(DlList_T lst)
-		{
-
-
-			return lst->headOfQueue;
-
-
-		}
 		void printListForward(DlList_T lst)
 		{
 
-			struct node* currentNode = list->headOfQueue;
+			struct node* currentNode = lst->headOfQueue;
 			if(currentNode==NULL)
 			{
 
@@ -650,7 +670,6 @@
 				struct node* backwardStart=NULL;
 			
 
-				printf("FORWARD:\n");
 				while(currentNode!=NULL)
 				{
 
@@ -669,6 +688,22 @@
 
 			}
 
+
+
+		}
+		}
+		struct node* nextNode(struct node* thisNode)
+		{
+
+			return thisNode->next;
+
+
+		}
+		void* getData(struct node* thisNode)
+		{
+
+
+			return thisNode->data;
 
 
 		}

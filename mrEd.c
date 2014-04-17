@@ -16,6 +16,8 @@
 	struct node* getPrevious(DlList_T lst);
 	struct node* getHead(DlList_T lst);
 	void printListForward(DlList_T lst);
+	struct node* nextNode(struct node* thisNode);
+	void* getData(struct node* thisNode);
 
 	bool file_exists(const char * filename)
 	{
@@ -31,7 +33,7 @@
 	}
 
 	
-	void startLookingforInput(DlList_T lst)
+	void startLookingforInput(DlList_T lst,const char * filename)
 	{
 		int hasChanged=0;
 		int looping=1;
@@ -76,6 +78,7 @@
 						memcpy(input,buff,strlen(buff));
 						dll_append(lst, input);
 						dll_move_to(lst,dll_size(lst));
+						hasChanged=1;
 						//printf("SIZE %d\n",dll_size(lst) );
 						//showCursor(lst);
 						//printList(lst);
@@ -170,21 +173,146 @@
 			}
 			else if(strcmp(buff,"p")==0)
 			{
-				printf("GOT HERE\n");
 				printListForward(lst);
 				dll_move_to(lst,dll_size(lst));
 
 
 			}
+			else if(strcmp(buff,"q")==0)
+			{
 
-		}
+				if(hasChanged)
+				{
 
-		printf("DONE\n");
+					printf("? buffer dirty\n");
+
+				}
+				else
+				{
+
+					dll_destroy(lst);
+					printf("\n");
+					printf("Bye\n");
+					break;
 
 
 
-	}
-	DlList_T readAndCreateStruct(const char * filename)
+				}
+
+
+
+			}
+			else if(strcmp(buff,"w")==0)
+			{
+
+
+				FILE* pFile = fopen(filename, "w");
+				if (!pFile) {
+					perror("The following error occurred:");
+				} else {
+					struct node* headNode=getHead(lst);
+
+					while(headNode!=NULL)
+					{
+						
+						fprintf(pFile, strcat((char *) (getData(headNode)),"\n"));
+						headNode=nextNode(headNode);
+					
+					
+					}
+					printf("%s:file\n",filename );
+					hasChanged=0;
+					fclose(pFile);
+
+
+			}
+
+
+			}
+			else if(strcmp(buff,"wq")==0)
+			{
+				FILE* pFile = fopen(filename, "w");
+				if (!pFile) {
+					perror("The following error occurred:");
+				} 
+				else {
+					struct node* headNode=getHead(lst);
+
+					while(headNode!=NULL)
+					{
+						
+						printf("%s\n", (char *) (getData(headNode)) );
+						fprintf(pFile, strcat((char *) (getData(headNode)),"\n"));
+						headNode=nextNode(headNode);
+					
+					
+					}
+					printf("%s:file\n",filename );
+					hasChanged=0;
+					fclose(pFile);
+					dll_destroy(lst);
+					printf("\n");
+					printf("Bye\n");
+					break;
+
+
+
+
+
+				}
+			}
+			else if(strcmp(buff,"i")==0)
+			{	
+				printf("HIT\n");
+		
+				int looping=1;
+				while(looping)
+				{
+					fgets(buff,MAX_LINE, stdin);
+					printf("HERE\n");
+					printf(" HERE DUDE %s\n",buff );
+					printf("%d\n",strcmp(buff,".") );
+					
+					if(strcmp(buff,".")==10)
+					{
+						printf("DONE\n");
+						break;
+
+					}
+					else
+					{
+						printf("THE DATA %s\n", buff );
+						dll_insert_at(lst,getCursorNumber(lst),(void *) buff);
+						dll_move_to(lst,getCursorNumber(lst));
+
+
+					}
+	
+
+				}
+				
+				
+	
+
+
+
+			}
+			else if(strcmp(buff,"d")==0)
+			{
+				printf("HITIN\n");
+				dll_pop(lst,getCursorNumber(lst));
+
+
+
+			}
+			else 
+			{
+				printf(" LOOK %s\n",buff );
+			}
+}
+}
+	
+	void readAndCreateStruct(const char * filename)
 	{
 		
 		DlList_T myList=dll_create();
@@ -212,7 +340,7 @@
 			fclose(pFile);
 		}
 		dll_move_to(myList,dll_size(myList));
-		startLookingforInput(myList);
+		startLookingforInput(myList,filename);
 
 
 
