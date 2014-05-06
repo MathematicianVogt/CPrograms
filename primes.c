@@ -7,7 +7,15 @@
 #include <pthread.h>
 
 
+struct infoHolder
+{
+	int start;
+	int end;
+	int threadId;
 
+
+
+};
 int isPrime(int number)
 {
 
@@ -35,107 +43,95 @@ int isPrime(int number)
 
 
 }
-void sieve(startPrime,end)
-{
-	int startPrimeLoop=startPrime;
-	int dummystart=startPrime;
-	int size = end-startPrime;
-	int possiblePrimeList[size];
-	int notDone=1;
-	int startIndex=0;
-	printf("HERE\n");
-	for(int i=0; i<size; i++)
+void *primeGenerator(void *infoHold)
+{	
+	struct infoHolder *myinfo=  (struct infoHolder *) infoHold;
+	int myStart=myinfo->start;
+	int myEnd=myinfo->end;
+	int myThreadID = myinfo->threadId;
+
+	printf("Thread #%d results:  ",myThreadID);
+	for(int i=myStart; i<myEnd; i++)
 	{
 
-		possiblePrimeList[i]=dummystart;
-		dummystart++;
 
-
-	}
-	while(notDone)
-	{
-
-		for (int i=startIndex; i<size; i=i+startPrimeLoop)
-		{
-
-			if(i!=0)
-			{
-
-				possiblePrimeList[i]=0;
-				printf("%d INDEX\n", i );
-				printf("%d LOOKIE\n", possiblePrimeList[i] );
-
-
-			}
-
-
-
-
-		}
-		for(int j=0; j<size; j++)
-			{
-
-				if(possiblePrimeList[j]!=0 && possiblePrimeList[j]>startPrimeLoop)
-				{
-
-					startPrimeLoop=possiblePrimeList[j];
-					startIndex=j;
-					break;
-
-
-				}
-				else if(j=size-1)
-				{
-
-
-					notDone=0;
-
-				}
-
-			}
-
-		
-
-		
-
-
-	}
-
-	for (int i =0; i<size; i++)
-		{
-
-			if(possiblePrimeList[i]!=0)
-			{
-				printf("%d,", possiblePrimeList[i]);
-			}
-
-		}
-
-
-}
-
-void prime(int start,int end, int numberOfThreads)
-{
-	int firstPrime;
-
-	for(int i=start; i<end; i++)
-	{
 		if(isPrime(i))
 		{
 
-			firstPrime=i;
-			break;
+			printf("%d ", i);
 
 
 		}
+
 	}
-	sieve(firstPrime,end);
 
 
 
 
 
 }
+
+int *generateIntervalArray(int start, int end, int numberOfThreads)
+{
+	
+	int *array=malloc(sizeof(int)*numberOfThreads);
+	int myIntervals[numberOfThreads];
+	int change=(end-start)/numberOfThreads;
+	printf("CHANGE%d\n",change );
+	for(int i=0; i<numberOfThreads+1;i++)
+	{
+		array[i]=start+(i*change);
+
+
+
+	}
+	return array;
+
+}
+void execute(int start, int end, int numberOfThreads)
+{	int rc;
+	void *retval;
+	pthread_t threads[numberOfThreads];
+	struct infoHolder *myinfo[numberOfThreads];
+	int *myInterval=generateIntervalArray(start,end,numberOfThreads);
+
+	
+
+
+	for(int t = 0; t < numberOfThreads; t++ ) 
+	{
+		struct infoHolder *currentBody=malloc(sizeof(struct infoHolder));
+		
+		printf("FIRST%d\n", myInterval[t]);
+		printf("second%d\n", myInterval[t+1]);
+		currentBody->start=myInterval[t];
+		currentBody->end=myInterval[t+1];
+		currentBody->threadId=t;
+		myinfo[t]=currentBody;
+		rc = pthread_create( &threads[t], NULL, primeGenerator,(void*) currentBody);
+
+		if (rc){
+		   printf( "ERROR; pthread_create() returned %d\n", rc );
+		   exit(-1);
+		}
+	
+
+	}
+
+	for( int t = 0; t < numberOfThreads; t++ ) {
+		pthread_join( threads[t], &retval );
+	}
+	free(myInterval);
+	for(int i=0; i<numberOfThreads; i++)
+	{
+
+		free(myinfo[i]);
+
+	}
+
+
+}
+
 
 
 int main(int argc, char *argv[])
@@ -257,12 +253,7 @@ int main(int argc, char *argv[])
 
 
 	}
-
-	//
-	printf("%d\n",start );
-	printf("%d\n",end );
-	printf("%d\n",numberOfThreads );
-	prime(start,end,numberOfThreads);
+execute(start,end,numberOfThreads);
 
 
 return 0;
