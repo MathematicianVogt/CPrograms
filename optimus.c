@@ -75,7 +75,7 @@ int isPrime(int number)
 
 
 }
-//actual thead method, generates primes on an interval and puts them in a list saved
+//actual thead method, generates primes on an interval, only looks at odds though and puts them in a list saved
 //in the structure.
 void *primeGenerator(void *infoHold)
 {	
@@ -87,12 +87,15 @@ void *primeGenerator(void *infoHold)
 	{
 
 
+		if(i%2!=0)
+		{
 		if(isPrime(i))
 		{
 
 			myPrimeList[i]=i;
 
 
+		}
 		}
 
 	}
@@ -104,7 +107,6 @@ void *primeGenerator(void *infoHold)
 
 }
 //gets the invervals need to properly divide up the intervals for n threads.
-
 int *generateIntervalArray(int start, int end, int numberOfThreads)
 {
 	
@@ -229,8 +231,8 @@ int main(int argc, char *argv[])
 
 	if(argc<2)
 	{
+
 		fprintf(stderr, "Usage: primes start end threads\n" );
-		
 		exit (EXIT_FAILURE);
 
 	}
@@ -246,6 +248,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
+
 			fprintf(stderr, "Unable to convert %s to number.\n",argv[1] );
 			exit (EXIT_FAILURE);
 
@@ -266,6 +269,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
+
 			fprintf(stderr, "Unable to convert %s to number.\n",argv[1] );
 			exit (EXIT_FAILURE);
 
