@@ -41,9 +41,43 @@ void verboseOff()
 
 	verbose=0;
 }
+void showVerbose(struct pastCommand *entry)
+{
+
+	if(entry==NULL)
+	{
+
+
+	}
+	else
+	{
+		int myLength=entry->commandlistLength;
+		//char *myCommand=entry->command;
+		//printf("LOOKIE %s\n",myCommand);
+ 
+		//printf("Commands #%d: %s\n\n",number, myCommand);
+		printf("input command tokens:\n");
+		for(int i=0; i<myLength; i++)
+		{
+
+			printf("%d:%s\n",i,entry->commandslist[i]);
+
+
+		}
+			printf("\n");
+		}
+
+
+}
+
 
 int mish_command_name(int argc, char *argv[])
 {
+	
+
+		
+
+
 	pid_t id;
 	int status;
 
@@ -57,15 +91,9 @@ int mish_command_name(int argc, char *argv[])
 	case 0:	// we are the child process
 
 
-		// if that failed, let's try /usr/bin
-		execv( argv[0], argv );
-		perror( "execv" );
-
-		// use _exit() to avoid problems with the shared
-		// stdout still being used by our parent
+		execvp( argv[0], argv );
+		perror("execvp");
 		_exit( EXIT_FAILURE );
-
-		// will never reach this statement!
 		break;
 
 	default: // we are the parent
@@ -73,22 +101,48 @@ int mish_command_name(int argc, char *argv[])
 
 	}
 
+
+
+
+
+
 	// parent will wait for child to exit
 	id = wait( &status );
+	if (verbose)
+		{
+
+			printf("command: ");
+			for(int i=0; i<argc; i++)
+			{
+
+				printf("%s ",argv[i]);
+
+
+			}
+			printf("\n");
+			printf("input command tokens:\n");
+			for(int i=0; i<argc; i++)
+			{
+				printf("%d:%s\n",i,argv[i] );
+
+			}
+			printf("waiting for pid %d:",id );
+			printf("%s\n",argv[0]);
+		}
+
 	if( id < 0 ) {
 		perror( "wait" );
 	} else {
-		printf( "Parent: child %d terminated, status %d\n",
-			id, status );
+	
 	}
 
-	puts( "Parent is now exiting." );
+
 	return 0;
 
 }
 void addNewHistory(struct pastCommand *newHistory,struct pastCommand *historyList[])
 {
-	char *look = newHistory->command;
+	//char *look = newHistory->command;
 	//printf("HEREsad %s\n",look );
 	if(currentNumberOfHistoryElements<historyLength)
 	{
@@ -109,12 +163,25 @@ void addNewHistory(struct pastCommand *newHistory,struct pastCommand *historyLis
 
 	}
 	else
-	{
-
+	{	//printf("GOT HERE %d\n", currentNumberOfHistoryElements );
+		
+	
+		struct pastCommand *temp=historyList[0];
+		struct pastCommand *temp1;
 		for(int i=0; i<historyLength-1; i++)
 		{
 
-			historyList[i+1]=historyList[i];
+			temp1=historyList[i+1];
+			historyList[i+1]=temp;
+			temp=temp1;
+			if(i==historyLength-1)
+			{
+
+
+				free(temp);
+
+			}
+
 
 
 
@@ -156,7 +223,8 @@ void printHistoryElement(struct pastCommand *currentHistory, int number)
 	char *myCommand=currentHistory->command;
 	//printf("LOOKIE %s\n",myCommand);
  
-	printf("Commands #%d: %s\n",number, myCommand);
+	printf("Commands #%d: %s\n\n",number, myCommand);
+	printf("input command tokens:\n");
 	for(int i=0; i<myLength; i++)
 	{
 
@@ -200,7 +268,7 @@ void freeHistoryList(struct pastCommand *allHistories[])
 	}
 
 }
-void forkProcess(char* buff)
+void forkProcess(char* buff, struct pastCommand *allHistory[])
 {
 
 	//printf("%s\n", buff );
@@ -213,9 +281,20 @@ void forkProcess(char* buff)
    		*cp='\0';
    		ptrArray[ptrIndex++] = ++cp;
    	} 
-   	ptrArray[ptrIndex+1]=NULL;
+   	ptrArray[ptrIndex]=NULL;
 	
    	mish_command_name(ptrIndex,ptrArray);
+   	struct pastCommand *newGuy=malloc(sizeof(struct pastCommand));
+   	newGuy->command=strdup(ptrArray[0]);
+   	newGuy->commandlistLength=ptrIndex;
+
+   	for(int i=0; i<ptrIndex; i++)
+   	{
+
+   		newGuy->commandslist[i]=strdup(ptrArray[i]);
+
+   	}
+   	addNewHistory(newGuy,allHistory);
 
 }
 
@@ -256,10 +335,26 @@ void runProgram()
 				current->commandlistLength=0;
 				addNewHistory(current,allCommands);
 				currentCommandNumber++;
+				if(verbose)
+				{
+
+					printf("command: %s\n",buf );
+					showVerbose(current);
+					printf("command status:%d\n",currentCommandNumber);
+
+
+
+				}
 
 
 			}
 			
+			else if(strcmp(buf, "")==0)
+			{
+
+				printf("EMPTY\n");
+
+			}
 			else if(strcmp(buf,"verbose on")==0)
 			{
 
@@ -269,6 +364,16 @@ void runProgram()
 				current->commandlistLength=0;
 				addNewHistory(current,allCommands);
 				currentCommandNumber++;
+				if(verbose)
+				{
+
+					printf("command: %s\n",buf );
+					showVerbose(current);
+					printf("command status:%d\n",currentCommandNumber);
+
+
+
+				}
 
 
 			}
@@ -282,6 +387,16 @@ void runProgram()
 				current->commandlistLength=0;
 				addNewHistory(current,allCommands);
 				currentCommandNumber++;
+				if(verbose)
+				{
+
+					printf("command: %s\n",buf );
+					showVerbose(current);
+					printf("command status:%d\n",currentCommandNumber);
+
+
+
+				}
 
 			}
 			else if(strncmp(buf, "verbose", strlen("verbose")) == 0)
@@ -292,18 +407,14 @@ void runProgram()
 
 
 			}
-			else if(strcmp(buf,"")==0)
-			{
-
-				printf("HERE");
-
-			}	
+			
 			else if(strcmp(buf,"quit")==0)
 			{
 
 				free(buf);
 				freeHistoryList(allCommands);
 				exit(EXIT_SUCCESS);
+
 
 
 			}
@@ -323,9 +434,12 @@ void runProgram()
 			{
 
 
-				forkProcess(buf);
+				forkProcess(buf,allCommands);
 				currentCommandNumber++;
-
+				if(verbose)
+				{
+				printf("command status: %d\n",currentCommandNumber);
+				}
 			}
 
 
