@@ -8,7 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 #define MAX_LINE  80
-
+//varibles for program
 	int historyLength=10;
 	int currentNumberOfHistoryElements=0;
 	int currentCommandNumber=1;
@@ -16,7 +16,7 @@
 	size_t n=MAX_LINE;
 	int verbose=0;
 
-
+//structure that will be used as a history element 
 struct pastCommand
 {
 
@@ -28,19 +28,20 @@ struct pastCommand
 
 
 };
-
+//turn verbose mode on
 void verboseOn()
 {
 	verbose=1;
 
 
 }
-
+//turn verbose off
 void verboseOff()
 {	
 
 	verbose=0;
 }
+//if verbose is on then show command information.
 void showVerbose(struct pastCommand *entry)
 {
 
@@ -70,7 +71,7 @@ void showVerbose(struct pastCommand *entry)
 
 }
 
-
+//actually executes a process within the mish.c 
 int mish_command_name(int argc, char *argv[])
 {
 	
@@ -140,6 +141,7 @@ int mish_command_name(int argc, char *argv[])
 	return 0;
 
 }
+//when an input is put into the program that is not a new line, a new history item will be added
 void addNewHistory(struct pastCommand *newHistory,struct pastCommand *historyList[])
 {
 	//char *look = newHistory->command;
@@ -198,7 +200,7 @@ void addNewHistory(struct pastCommand *newHistory,struct pastCommand *historyLis
 
 
 }
-
+//prints the help command when help is added.
 void printHelp()
 {
 
@@ -207,7 +209,7 @@ void printHelp()
 
 
 }
-
+//the string representation of a history element printed to the console.
 void printHistoryElement(struct pastCommand *currentHistory, int number)
 {
 	
@@ -237,7 +239,7 @@ void printHistoryElement(struct pastCommand *currentHistory, int number)
 
 
 }
-
+//prints all the histories up to the point of input at the time at a max of 10 at any given time.
 void printHistory(struct pastCommand *allHistories[],int length)
 {
 	for(int i=0; i<length; i++)
@@ -251,6 +253,7 @@ void printHistory(struct pastCommand *allHistories[],int length)
 
 
 }
+//when program ends, free every part of the structs that were added
 void freeHistoryList(struct pastCommand *allHistories[])
 {
 
@@ -268,6 +271,7 @@ void freeHistoryList(struct pastCommand *allHistories[])
 	}
 
 }
+//when something is not an internal command, then we assume its a process and run it as an external command within the program
 void forkProcess(char* buff, struct pastCommand *allHistory[])
 {
 
@@ -297,7 +301,7 @@ void forkProcess(char* buff, struct pastCommand *allHistory[])
    	addNewHistory(newGuy,allHistory);
 
 }
-
+//execution of the program
 void runProgram()
 {	
 	struct pastCommand *allCommands[historyLength];
@@ -325,9 +329,20 @@ void runProgram()
 		}
 		else
 		{		
+			
+
+			
+
 			strtok(buf,"\n");
 			//printf("%s\n",buf );	
-			if(strcmp(buf,"help")==0)
+			if(strlen(buf)==1)
+			{
+
+
+
+			}
+
+			else if(strcmp(buf,"help")==0)
 			{
 				printHelp();
 				struct pastCommand *current=malloc(sizeof(struct pastCommand));
@@ -349,12 +364,6 @@ void runProgram()
 
 			}
 			
-			else if(strcmp(buf, "")==0)
-			{
-
-				printf("EMPTY\n");
-
-			}
 			else if(strcmp(buf,"verbose on")==0)
 			{
 
@@ -460,7 +469,7 @@ void runProgram()
 
 }
 
-
+//main method.
 int main(int argc, char *argv[])
 {
 
