@@ -7,6 +7,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #define MAX_LINE  80
 //varibles for program
 	int historyLength=10;
